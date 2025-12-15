@@ -1,0 +1,5 @@
+{
+  "name": "NeuroLabel Studio",
+  "description": "A professional-grade object detection labeling platform featuring AI-assisted pseudo-labeling via Gemini and support for external Python model integration.",
+  "requestFramePermissions": []
+}
