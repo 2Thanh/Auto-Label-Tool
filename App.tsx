@@ -43,7 +43,7 @@ const App: React.FC = () => {
         if (filter === 'labeled') return img.boxes.length > 0;
         if (filter === 'unlabeled') return img.boxes.length === 0;
         return true;
-    });
+    }).sort((a, b) => a.file.name.localeCompare(b.file.name));;
   }, [images, filter]);
 
   // Helper to convert file to Base64
