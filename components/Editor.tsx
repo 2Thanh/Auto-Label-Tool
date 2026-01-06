@@ -12,6 +12,16 @@ interface EditorProps {
 type InteractionMode = 'none' | 'drawing' | 'moving' | 'resizing' | 'panning';
 type ResizeHandle = 'n' | 's' | 'e' | 'w' | 'nw' | 'ne' | 'sw' | 'se' | null;
 
+const generateId = (): string => {
+  if (typeof crypto !== "undefined" && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return (
+    Math.random().toString(36).slice(2) +
+    Date.now().toString(36)
+  );
+};
+
 const Editor: React.FC<EditorProps> = ({ image, availableClasses, onUpdateBoxes, onAddClass }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -402,7 +412,7 @@ const Editor: React.FC<EditorProps> = ({ image, availableClasses, onUpdateBoxes,
         if (width > 0.01 && height > 0.01) {
             const colorIndex = availableClasses.findIndex(c => c.id === activeClass.id);
             const newBox: BoundingBox = {
-                id: crypto.randomUUID(),
+                id: generateId(),
                 x: Math.min(startPos.x, currentPos.x),
                 y: Math.min(startPos.y, currentPos.y),
                 width,

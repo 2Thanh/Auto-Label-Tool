@@ -20,7 +20,15 @@ const DownloadIcon = () => <svg className="w-5 h-5" fill="none" stroke="currentC
 const FilterIcon = () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>;
 const TrashIcon = () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>;
 const TagIcon = () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>;
-
+const generateId = (): string => {
+  if (typeof crypto !== "undefined" && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return (
+    Math.random().toString(36).slice(2) +
+    Date.now().toString(36)
+  );
+};
 const App: React.FC = () => {
   const [images, setImages] = useState<DatasetImage[]>([]);
   const [classes, setClasses] = useState<LabelClass[]>(DEFAULT_CLASSES);
@@ -110,7 +118,7 @@ const App: React.FC = () => {
             : '#999'; 
 
          return {
-            id: crypto.randomUUID(),
+            id: generateId(),
             x: p.xmin,
             y: p.ymin,
             width: p.xmax - p.xmin,
@@ -205,7 +213,7 @@ const App: React.FC = () => {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const newImages: DatasetImage[] = (Array.from(e.target.files) as File[]).map(file => ({
-        id: crypto.randomUUID(),
+        id: generateId(),
         file,
         url: URL.createObjectURL(file),
         width: 0,
@@ -260,11 +268,11 @@ const App: React.FC = () => {
             const content = await txtFile.text();
             // Pass the CURRENT known classes to parser
             const parsedBoxes = parseYoloFile(content, updatedClasses);
-            boxes = parsedBoxes.map(b => ({ ...b, id: crypto.randomUUID() }));
+            boxes = parsedBoxes.map(b => ({ ...b, id: generateId() })); // Assign unique IDs
         }
 
         newImages.push({
-            id: crypto.randomUUID(),
+            id: generateId(),
             file: imgFile,
             url: URL.createObjectURL(imgFile),
             width: 0,
