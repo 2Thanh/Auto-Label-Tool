@@ -14,7 +14,7 @@ export const LABEL_COLORS = [
 ];
 
 export const DEFAULT_CLASSES: LabelClass[] = [
-  { id: 0, name: 'grdg' },
+  { id: 0, name: 'human' },
   { id: 1, name: 'car' },
   { id: 2, name: 'dog' },
   { id: 3, name: 'cat' },
